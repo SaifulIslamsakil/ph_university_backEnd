@@ -81,12 +81,12 @@ const studentSchema = new mongoose_1.Schema({
         required: [true, 'ID is required'],
         unique: true,
     },
-    user: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        required: [true, 'User id is required'],
-        unique: true,
-        ref: 'User',
-    },
+    // user: {
+    //   type: Schema.Types.ObjectId,
+    //   required: [true, 'User id is required'],
+    //   unique: true,
+    //   ref: 'User',
+    // },
     name: {
         type: userNameSchema,
         required: [true, 'Name is required'],

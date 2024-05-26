@@ -1,4 +1,11 @@
+import { StudentModel, TStudent } from './student.interface';
 import { Student } from './student.model';
+
+
+const createStudent = async(value :any )=>{
+    const result = Student.create(value)
+    return result
+}
 
 const getAllStudentsFromDB = async () => {
   const result = await Student.find();
@@ -16,6 +23,7 @@ const deleteStudentFromDB = async (id: string) => {
 };
 
 export const StudentServices = {
+    createStudent,
   getAllStudentsFromDB,
   getSingleStudentFromDB,
   deleteStudentFromDB,
