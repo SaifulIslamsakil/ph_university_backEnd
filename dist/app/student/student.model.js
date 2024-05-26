@@ -156,7 +156,6 @@ studentSchema.pre('findOne', function (next) {
     this.find({ isDeleted: { $ne: true } });
     next();
 });
-a;
 studentSchema.pre('aggregate', function (next) {
     this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
     next();
