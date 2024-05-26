@@ -1,13 +1,11 @@
 
 
 
-export type Iuser = {
+export type Tuser = {
     id: number;
     password: string;
-    needsPasswordChange: string,
-    role: string;
-    status: string
+    needsPasswordChange: boolean,
+    role: "admin"| "faculty"| "student";
+    status: "in_progress"|"blocked"
     isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date
 }
