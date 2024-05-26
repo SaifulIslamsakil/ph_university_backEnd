@@ -8,32 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentControllers = void 0;
 // import sendResponse from '../../utils/sendResponse';
 const student_service_1 = require("./student.service");
-const student_validation_1 = __importDefault(require("./student.validation "));
-const createStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const studentData = req.body;
-        const zodParsedData = student_validation_1.default.parse(studentData);
-        if (!zodParsedData) {
-            return;
-        }
-        const result = yield student_service_1.StudentServices.createStudent(zodParsedData);
-        res.status(200).json({
-            success: true,
-            message: 'Student is retrieved succesfully',
-            data: result,
-        });
-    }
-    catch (error) {
-        console.log(error);
-    }
-});
+// const createStudent = async (req: Request, res: Response) => {
+//     try {
+//         const studentData = req.body
+//          const zodParsedData = studentValidationSchema.parse(studentData);
+//          if(!zodParsedData){
+//             return
+//          }
+//          const result = await StudentServices.createStudent(zodParsedData)
+//          res.status(200).json({
+//             success: true,
+//             message: 'Student is retrieved succesfully',
+//             data: result,
+//          })
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
 const getSingleStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { studentId } = req.params;
@@ -82,7 +77,7 @@ const deleteStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.StudentControllers = {
-    createStudent,
+    // createStudent,
     getAllStudents,
     getSingleStudent,
     deleteStudent,

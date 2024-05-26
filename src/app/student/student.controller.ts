@@ -4,23 +4,23 @@ import httpStatus from 'http-status';
 import { StudentServices } from './student.service';
 import studentValidationSchema from './student.validation ';
 
-const createStudent = async (req: Request, res: Response) => {
-    try {
-        const studentData = req.body
-         const zodParsedData = studentValidationSchema.parse(studentData);
-         if(!zodParsedData){
-            return
-         }
-         const result = await StudentServices.createStudent(zodParsedData)
-         res.status(200).json({
-            success: true,
-            message: 'Student is retrieved succesfully',
-            data: result,
-         })
-    } catch (error) {
-        console.log(error)
-    }
-}
+// const createStudent = async (req: Request, res: Response) => {
+//     try {
+//         const studentData = req.body
+//          const zodParsedData = studentValidationSchema.parse(studentData);
+//          if(!zodParsedData){
+//             return
+//          }
+//          const result = await StudentServices.createStudent(zodParsedData)
+//          res.status(200).json({
+//             success: true,
+//             message: 'Student is retrieved succesfully',
+//             data: result,
+//          })
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
 
 const getSingleStudent = async (
     req: Request,
@@ -84,7 +84,7 @@ const deleteStudent = async (
 };
 
 export const StudentControllers = {
-    createStudent,
+    // createStudent,
     getAllStudents,
     getSingleStudent,
     deleteStudent,
