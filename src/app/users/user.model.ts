@@ -12,7 +12,7 @@ const UserSchema = new Schema<Tuser>({
     },
     needsPasswordChange:{
         type:Boolean,
-        default:false
+        default:true
     },
     role:{
         type:String,
@@ -20,7 +20,8 @@ const UserSchema = new Schema<Tuser>({
     },
     status:{
         type:String,
-        enum:["in_progress","blocked"]
+        enum:["in_progress","blocked"],
+        default:"in_progress"
     },
     isDeleted:{
         type:Boolean,
@@ -33,3 +34,5 @@ const UserSchema = new Schema<Tuser>({
 })
 
 const UserModel = model<Tuser>("User", UserSchema)
+
+export default UserModel
