@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { userSevice } from "./user.service";
 
 
 
-const studentCreate = async(req:Request, res:Response)=>{
+const studentCreate = async(req:Request, res:Response, next:NextFunction)=>{
     try {
         const   studentData  = req.body
         const {password} = studentData
@@ -16,13 +16,7 @@ const studentCreate = async(req:Request, res:Response)=>{
             data : result
         })
     } catch (error) {
-        console.log(error)
-        // res.status(500).json({
-        //     success : false,
-        //     messege : "student post wrong",
-        //     data : error
-        
-        // })
+       next(error)
     }
 } 
 
