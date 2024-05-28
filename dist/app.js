@@ -8,6 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const student_route_1 = require("./app/modules/student/student.route");
 const user_route_1 = __importDefault(require("./app/modules/users/user.route"));
 const globalErrorHandler_1 = __importDefault(require("./app/midelware/globalErrorHandler"));
+const noteFoundRoute_1 = __importDefault(require("./app/midelware/noteFoundRoute"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
@@ -17,4 +18,5 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 app.use(globalErrorHandler_1.default);
+app.use(noteFoundRoute_1.default);
 exports.default = app;
