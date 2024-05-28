@@ -1,4 +1,4 @@
-import confiq from "../confiq"
+import confiq from "../../confiq"
 import { TStudent } from "../student/student.interface"
 import { Student } from "../student/student.model"
 import UserModel from "./user.model"
