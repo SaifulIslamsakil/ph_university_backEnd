@@ -8,19 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
 const user_service_1 = require("./user.service");
+const http_status_1 = __importDefault(require("http-status"));
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const studentCreate = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const studentData = req.body;
         const { password } = studentData;
         console.log(password);
         const result = yield user_service_1.userSevice.creatStudenIntoDB(password, studentData);
-        res.status(200).json({
+        (0, sendResponse_1.default)(res, {
+            statusCode: http_status_1.default.OK,
             success: true,
-            messege: "student post done",
-            data: result
+            message: 'Student is created succesfully',
+            data: result,
         });
     }
     catch (error) {
