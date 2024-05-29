@@ -35,7 +35,6 @@ const creatStudenIntoDB = (password, studentData) => __awaiter(void 0, void 0, v
         const newStudent = yield student_model_1.Student.create(studentData);
         return newStudent;
     }
-    console.log(studentData);
 });
 exports.userSevice = {
     creatStudenIntoDB

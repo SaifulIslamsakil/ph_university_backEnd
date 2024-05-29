@@ -89,7 +89,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     },
     password:{
       type:String,
-      required:true
     },
     name: {
       type: userNameSchema,

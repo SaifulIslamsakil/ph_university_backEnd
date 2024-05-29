@@ -27,7 +27,6 @@ const creatStudenIntoDB = async (password: string, studentData: TStudent) => {
         const newStudent = await Student.create(studentData)
         return newStudent
     }
-    console.log(studentData)
 }
 
 export const userSevice = {

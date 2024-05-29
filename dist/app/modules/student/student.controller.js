@@ -8,76 +8,46 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentControllers = void 0;
-// import sendResponse from '../../utils/sendResponse';
+const http_status_1 = __importDefault(require("http-status"));
+;
 const student_service_1 = require("./student.service");
-// const createStudent = async (req: Request, res: Response) => {
-//     try {
-//         const studentData = req.body
-//          const zodParsedData = studentValidationSchema.parse(studentData);
-//          if(!zodParsedData){
-//             return
-//          }
-//          const result = await StudentServices.createStudent(zodParsedData)
-//          res.status(200).json({
-//             success: true,
-//             message: 'Student is retrieved succesfully',
-//             data: result,
-//          })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-const getSingleStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { studentId } = req.params;
-        const result = yield student_service_1.StudentServices.getSingleStudentFromDB(studentId);
-        // sendResponse(res, {
-        //   statusCode: httpStatus.OK,
-        //   success: true,
-        //   message: 'Student is retrieved succesfully',
-        //   data: result,
-        // });
-        res.status(200).json({
-            success: true,
-            message: 'Student is retrieved succesfully',
-            data: result,
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-});
-const getAllStudents = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const result = yield student_service_1.StudentServices.getAllStudentsFromDB();
-        res.status(200).json({
-            success: true,
-            message: 'Student is retrieved succesfully',
-            data: result,
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-});
-const deleteStudent = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { studentId } = req.params;
-        const result = yield student_service_1.StudentServices.deleteStudentFromDB(studentId);
-        res.status(200).json({
-            success: true,
-            message: 'Student is retrieved succesfully',
-            data: result,
-        });
-    }
-    catch (err) {
-        next(err);
-    }
-});
+const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
+const catchAsync_1 = __importDefault(require("./catchAsync"));
+const getSingleStudent = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { studentId } = req.params;
+    const result = yield student_service_1.StudentServices.getSingleStudentFromDB(studentId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Student is retrieved succesfully',
+        data: result,
+    });
+}));
+const getAllStudents = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield student_service_1.StudentServices.getAllStudentsFromDB();
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Student is retrieved succesfully",
+        data: result
+    });
+}));
+const deleteStudent = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { studentId } = req.params;
+    const result = yield student_service_1.StudentServices.deleteStudentFromDB(studentId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Student is retrieved succesfully',
+        data: result
+    });
+}));
 exports.StudentControllers = {
-    // createStudent,
     getAllStudents,
     getSingleStudent,
     deleteStudent,

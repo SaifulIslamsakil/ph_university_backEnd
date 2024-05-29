@@ -29,7 +29,7 @@ const localGuardianSchema = zod_1.z.object({
 });
 exports.studentValidationSchema = zod_1.z.object({
     id: zod_1.z.string(),
-    password: zod_1.z.string().max(20),
+    password: zod_1.z.string().max(20).optional(),
     name: userNameSchema,
     gender: zod_1.z.enum(['male', 'female', 'other']),
     dateOfBirth: zod_1.z.string(),
