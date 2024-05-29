@@ -4,8 +4,8 @@ import validateRequest from "../../midelware/validateRequest"
 import studentValidationSchema from "../student/student.validation "
 
 
-const userRoute = express.Router()
+const UserRoute = express.Router()
 
-userRoute.post("/create-student", validateRequest(studentValidationSchema), userController.studentCreate)
+UserRoute.post("/create-student", validateRequest(studentValidationSchema), userController.studentCreate)
 
-export default userRoute
+export default UserRoute
