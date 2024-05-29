@@ -17,7 +17,7 @@ const http_status_1 = __importDefault(require("http-status"));
 ;
 const student_service_1 = require("./student.service");
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
-const catchAsync_1 = __importDefault(require("./catchAsync"));
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const getSingleStudent = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { studentId } = req.params;
     const result = yield student_service_1.StudentServices.getSingleStudentFromDB(studentId);

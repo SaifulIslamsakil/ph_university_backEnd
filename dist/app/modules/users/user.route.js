@@ -5,6 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const user_controller_1 = require("./user.controller");
+const validateRequest_1 = __importDefault(require("../../midelware/validateRequest"));
+const student_validation_1 = __importDefault(require("../student/student.validation "));
 const userRoute = express_1.default.Router();
-userRoute.post("/create-student", user_controller_1.userController.studentCreate);
+userRoute.post("/create-student", (0, validateRequest_1.default)(student_validation_1.default), user_controller_1.userController.studentCreate);
 exports.default = userRoute;

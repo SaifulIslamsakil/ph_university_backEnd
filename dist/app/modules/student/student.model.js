@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Student = void 0;
+exports.Student = exports.studentSchema = void 0;
 const mongoose_1 = require("mongoose");
 const userNameSchema = new mongoose_1.Schema({
     firstName: {
@@ -75,7 +75,7 @@ const localGuradianSchema = new mongoose_1.Schema({
         required: [true, 'Address is required'],
     },
 });
-const studentSchema = new mongoose_1.Schema({
+exports.studentSchema = new mongoose_1.Schema({
     id: {
         type: String,
         required: [true, 'ID is required'],
@@ -147,27 +147,27 @@ const studentSchema = new mongoose_1.Schema({
     },
 });
 // virtual
-studentSchema.virtual('fullName').get(function () {
+exports.studentSchema.virtual('fullName').get(function () {
     return this.name.firstName + this.name.middleName + this.name.lastName;
 });
 // Query Middleware
-studentSchema.pre('find', function (next) {
+exports.studentSchema.pre('find', function (next) {
     this.find({ isDeleted: { $ne: true } });
     next();
 });
-studentSchema.pre('findOne', function (next) {
+exports.studentSchema.pre('findOne', function (next) {
     this.find({ isDeleted: { $ne: true } });
     next();
 });
-studentSchema.pre('aggregate', function (next) {
+exports.studentSchema.pre('aggregate', function (next) {
     this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
     next();
 });
 //creating a custom static method
-studentSchema.statics.isUserExists = function (id) {
+exports.studentSchema.statics.isUserExists = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
         const existingUser = yield exports.Student.findOne({ id });
         return existingUser;
     });
 };
-exports.Student = (0, mongoose_1.model)('Student', studentSchema);
+exports.Student = (0, mongoose_1.model)('Student', exports.studentSchema);

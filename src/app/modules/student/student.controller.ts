@@ -2,7 +2,7 @@ import {  Request, Response } from 'express';
 import httpStatus from 'http-status';;
 import { StudentServices } from './student.service';
 import sendResponse from '../../utils/sendResponse';
-import catchAsync from './catchAsync';
+import catchAsync from '../../utils/catchAsync';
 
 
 
