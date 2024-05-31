@@ -6,7 +6,6 @@ const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
     const message = err.message || 'Something went wrong!'
     res.status(statusCord).json({
         success: false,
-        dd:"sss",
         message,
         error: err
     })
