@@ -19,7 +19,7 @@ const getSingelAcademicSemesterFormDB = async (id: string) => {
 }
 
 const updateAcademicSemesterFormDB = async (id: string, payload: TAcademicSemester) => {
-    const resutl = await academicSemesterModel.findByIdAndUpdate({ id }, { payload })
+    const resutl = await academicSemesterModel.findByIdAndUpdate({ _id :id }, payload, {new:true} )
     return resutl
 }
 

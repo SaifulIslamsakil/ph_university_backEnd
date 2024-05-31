@@ -24,7 +24,7 @@ const getSingelAcademicSemesterFormDB = (id) => __awaiter(void 0, void 0, void 0
     return result;
 });
 const updateAcademicSemesterFormDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const resutl = yield academicSemester_model_1.academicSemesterModel.findByIdAndUpdate({ id }, { payload });
+    const resutl = yield academicSemester_model_1.academicSemesterModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
     return resutl;
 });
 exports.AcademicSemesterServices = {

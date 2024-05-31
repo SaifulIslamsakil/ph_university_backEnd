@@ -10,6 +10,7 @@ route.post("/create-academic-semister",validateRequest(AcademicSemesterValidatio
 route.get("/", AcademicSemesterController.getAllAcademicSemesters)
 
 route.get("/:semesterID", AcademicSemesterController.getSingelAcademicSemester)
+route.put("/:semesterID", AcademicSemesterController.updateAcademicSemester)
 
 
 
