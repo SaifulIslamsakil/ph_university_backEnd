@@ -19,7 +19,17 @@ const getAllAcademicSemestersFormDB = () => __awaiter(void 0, void 0, void 0, fu
     const result = yield academicSemester_model_1.academicSemesterModel.find();
     return result;
 });
+const getSingelAcademicSemesterFormDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield academicSemester_model_1.academicSemesterModel.findById(id);
+    return result;
+});
+const updateAcademicSemesterFormDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const resutl = yield academicSemester_model_1.academicSemesterModel.findByIdAndUpdate({ id }, { payload });
+    return resutl;
+});
 exports.AcademicSemesterServices = {
     createAcdemicSemesterInToDB,
-    getAllAcademicSemestersFormDB
+    getAllAcademicSemestersFormDB,
+    getSingelAcademicSemesterFormDB,
+    updateAcademicSemesterFormDB
 };

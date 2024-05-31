@@ -9,4 +9,8 @@ route.post("/create-academic-semister",validateRequest(AcademicSemesterValidatio
 
 route.get("/", AcademicSemesterController.getAllAcademicSemesters)
 
+route.get("/:semesterID", AcademicSemesterController.getSingelAcademicSemester)
+
+
+
 export const  AcademicSemesterRoute = route
