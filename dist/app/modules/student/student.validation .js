@@ -43,6 +43,7 @@ exports.studentValidationSchema = zod_1.z.object({
         guardian: guardianSchema,
         localGuardian: localGuardianSchema,
         profileImg: zod_1.z.string(),
+        admissionSemester: zod_1.z.string(),
         isActive: zod_1.z.enum(['active', 'blocked']).default('active'),
         isDeleted: zod_1.z.boolean().optional(),
     })

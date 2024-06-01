@@ -87,8 +87,8 @@ export const studentSchema = new Schema<TStudent, StudentModel>(
       unique: true,
       ref: 'userCreate',
     },
-    password:{
-      type:String,
+    password: {
+      type: String,
     },
     name: {
       type: userNameSchema,
@@ -137,6 +137,10 @@ export const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Local guardian information is required'],
     },
     profileImg: { type: String },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicSemesters"
+    },
     isDeleted: {
       type: Boolean,
       default: false,

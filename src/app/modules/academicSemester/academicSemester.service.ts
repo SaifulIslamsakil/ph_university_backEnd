@@ -23,6 +23,10 @@ const getSingelAcademicSemesterFormDB = async (id: string) => {
 }
 
 const updateAcademicSemesterFormDB = async (id: string, payload: TAcademicSemester) => {
+
+    if(payload.name && payload.code && academicSemesterNameCodeMapper[payload.name] !== payload.code ){
+        throw new Error('Invalid Semester Code');
+    }
     const resutl = await academicSemesterModel.findByIdAndUpdate({ _id :id }, payload, {new:true} )
     return resutl
 }

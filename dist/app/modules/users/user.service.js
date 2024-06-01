@@ -14,8 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userSevice = void 0;
 const confiq_1 = __importDefault(require("../../confiq"));
+const academicSemester_model_1 = require("../academicSemester/academicSemester.model");
 const student_model_1 = require("../student/student.model");
 const user_model_1 = __importDefault(require("./user.model"));
+const user_utils_1 = require("./user.utils");
 const creatStudenIntoDB = (password, studentData) => __awaiter(void 0, void 0, void 0, function* () {
     const user = {
         password: "",
@@ -26,8 +28,13 @@ const creatStudenIntoDB = (password, studentData) => __awaiter(void 0, void 0, v
     user.password = password || confiq_1.default.default_password;
     // set role 
     user.role = "student";
+    // find student by academicSemester id 
+    const admissionSemester = yield academicSemester_model_1.academicSemesterModel.findById(studentData.admissionSemester);
+    if (!admissionSemester) {
+        throw new Error('Admission semester not found');
+    }
     // set genaret id
-    user.id = "2023102222";
+    user.id = yield (0, user_utils_1.generateStudentId)(admissionSemester);
     const userCreate = yield user_model_1.default.create(user);
     if (Object.keys(userCreate).length) {
         studentData.id = userCreate.id;

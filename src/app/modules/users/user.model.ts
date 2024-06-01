@@ -4,7 +4,7 @@ import { Tuser } from "./users.interface";
 
 const UserSchema = new Schema<Tuser>({
     id: {
-        type: Number,
+        type: String,
         required: true
     },
     password: {

@@ -137,6 +137,10 @@ exports.studentSchema = new mongoose_1.Schema({
         required: [true, 'Local guardian information is required'],
     },
     profileImg: { type: String },
+    admissionSemester: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "AcademicSemesters"
+    },
     isDeleted: {
         type: Boolean,
         default: false,

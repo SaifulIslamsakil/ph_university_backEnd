@@ -28,6 +28,9 @@ const getSingelAcademicSemesterFormDB = (id) => __awaiter(void 0, void 0, void 0
     return result;
 });
 const updateAcademicSemesterFormDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    if (payload.name && payload.code && academicSemester_constant_1.academicSemesterNameCodeMapper[payload.name] !== payload.code) {
+        throw new Error('Invalid Semester Code');
+    }
     const resutl = yield academicSemester_model_1.academicSemesterModel.findByIdAndUpdate({ _id: id }, payload, { new: true });
     return resutl;
 });

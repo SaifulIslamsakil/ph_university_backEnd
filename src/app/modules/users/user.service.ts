@@ -1,7 +1,9 @@
 import confiq from "../../confiq"
+import { academicSemesterModel } from "../academicSemester/academicSemester.model"
 import { TStudent } from "../student/student.interface"
 import { Student } from "../student/student.model"
 import UserModel from "./user.model"
+import { generateStudentId } from "./user.utils"
 import { TnewUser } from "./users.interface"
 
 
@@ -16,9 +18,15 @@ const creatStudenIntoDB = async (password: string, studentData: TStudent) => {
     user.password = password || confiq.default_password as string
     // set role 
     user.role ="student"
-    // set genaret id
-    user.id = "2023102222"
+    // find student by academicSemester id 
 
+    const admissionSemester = await academicSemesterModel.findById(studentData.admissionSemester)
+    if (!admissionSemester) {
+        throw new Error('Admission semester not found');
+      }
+    // set genaret id
+    user.id = await generateStudentId(admissionSemester) 
+    
     const userCreate = await UserModel.create(user)
 
     if(Object.keys(userCreate).length){

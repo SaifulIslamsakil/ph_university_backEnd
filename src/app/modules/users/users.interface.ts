@@ -2,7 +2,7 @@
 
 
 export type Tuser = {
-    id: number;
+    id: string;
     password: string;
     needsPasswordChange: boolean,
     role: "admin" | "faculty" | "student";
