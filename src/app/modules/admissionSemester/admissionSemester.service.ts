@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
-import { TAcademicSemester } from "./academicSemester.interface";
-import { academicSemesterModel } from "./academicSemester.model";
-import { academicSemesterNameCodeMapper } from "./academicSemester.constant";
+import { TAcademicSemester } from "./admissionSemester.interface";
+import { academicSemesterModel } from "./admissionSemester.model";
+import { academicSemesterNameCodeMapper } from "./admissionSemester.constant";
 
 
 const createAcdemicSemesterInToDB = async (payload: TAcademicSemester) => {

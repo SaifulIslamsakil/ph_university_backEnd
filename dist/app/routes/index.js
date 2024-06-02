@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const student_route_1 = require("../modules/student/student.route");
 const user_route_1 = __importDefault(require("../modules/users/user.route"));
-const academicSemester_route_1 = require("../modules/academicSemester/academicSemester.route");
+const admissionSemester_route_1 = require("../modules/admissionSemester/admissionSemester.route");
 const router = express_1.default.Router();
 const moduleRoute = [
     {
@@ -19,7 +19,7 @@ const moduleRoute = [
     },
     {
         path: '/academic-semister',
-        route: academicSemester_route_1.AcademicSemesterRoute,
+        route: admissionSemester_route_1.AcademicSemesterRoute,
     },
 ];
 moduleRoute.forEach(route => router.use(route.path, route.route));

@@ -1,5 +1,5 @@
 import confiq from "../../confiq"
-import { academicSemesterModel } from "../academicSemester/academicSemester.model"
+import { academicSemesterModel } from "../admissionSemester/admissionSemester.model"
 import { TStudent } from "../student/student.interface"
 import { Student } from "../student/student.model"
 import UserModel from "./user.model"

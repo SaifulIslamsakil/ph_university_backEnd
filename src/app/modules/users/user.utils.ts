@@ -1,4 +1,4 @@
-import { TAcademicSemester } from "../academicSemester/academicSemester.interface";
+import { TAcademicSemester } from "../admissionSemester/admissionSemester.interface";
 import UserModel from "./user.model";
 
 const findLastStudentId = async () => {

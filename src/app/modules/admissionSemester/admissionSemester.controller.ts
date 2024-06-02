@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
-import { AcademicSemesterServices } from "./academicSemester.service";
+import { AcademicSemesterServices } from "./admissionSemester.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 

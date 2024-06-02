@@ -1,7 +1,7 @@
 import express from "express"
-import { AcademicSemesterController } from "./academicSemester.controller"
+import { AcademicSemesterController } from "./admissionSemester.controller"
 import validateRequest from "../../midelware/validateRequest"
-import { AcademicSemesterValidations } from "./academicSemester.validattion"
+import { AcademicSemesterValidations } from "./admissionSemester.validattion"
 
 const route = express.Router()
 

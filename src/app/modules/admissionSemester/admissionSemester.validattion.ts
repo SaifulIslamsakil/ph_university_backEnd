@@ -3,7 +3,7 @@ import {
   AcademicSemesterCode,
   AcademicSemesterName,
   Months,
-} from './academicSemester.constant';
+} from './admissionSemester.constant';
 
 const createAcdemicSemesterValidationSchema = z.object({
   body: z.object({

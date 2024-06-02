@@ -1,7 +1,7 @@
 import exoress from "express"
 import { StudentRoutes } from "../modules/student/student.route"
 import UserRoute from "../modules/users/user.route"
-import { AcademicSemesterRoute } from "../modules/academicSemester/academicSemester.route"
+import { AcademicSemesterRoute } from "../modules/admissionSemester/admissionSemester.route"
 
 
 const router = exoress.Router()
