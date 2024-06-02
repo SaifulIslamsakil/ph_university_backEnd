@@ -25,6 +25,7 @@ academicDepartmentSchema.pre('save', async function (next) {
     name: this.name,
   });
 
+
   if (isDepartmentExist) {
     throw new AppError(
       httpStatus.NOT_FOUND,

@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import confiq from "../../confiq"
 import { academicSemesterModel } from "../admissionSemester/admissionSemester.model"
 import { TStudent } from "../student/student.interface"
@@ -5,10 +6,12 @@ import { Student } from "../student/student.model"
 import UserModel from "./user.model"
 import { generateStudentId } from "./user.utils"
 import { TnewUser } from "./users.interface"
+import AppError from "../../errors/AppError"
+import httpStatus from "http-status"
 
 
 const creatStudenIntoDB = async (password: string, studentData: TStudent) => {
-    const user :TnewUser = {
+    const user: TnewUser = {
         password: "",
         role: "",
         id: ""
@@ -17,23 +20,41 @@ const creatStudenIntoDB = async (password: string, studentData: TStudent) => {
 
     user.password = password || confiq.default_password as string
     // set role 
-    user.role ="student"
+    user.role = "student"
     // find student by academicSemester id 
 
-    const admissionSemester = await academicSemesterModel.findById(studentData.admissionSemester)
-    if (!admissionSemester) {
-        throw new Error('Admission semester not found');
-      }
-    // set genaret id
-    user.id = await generateStudentId(admissionSemester) 
-    
-    const userCreate = await UserModel.create(user)
+    const session = await mongoose.startSession()
 
-    if(Object.keys(userCreate).length){
-        studentData.id = userCreate.id
-        studentData.user = userCreate._id
-        const newStudent = await Student.create(studentData)
+    try {
+
+        await session.startTransaction()
+        const admissionSemester = await academicSemesterModel.findById(studentData.admissionSemester)
+        if (!admissionSemester) {
+            throw new Error('Admission semester not found');
+        }
+        // set genaret id
+        user.id = await generateStudentId(admissionSemester)
+
+        const userCreate = await UserModel.create([user], { session })
+        console.log(userCreate)
+        if (!userCreate.length) {
+            throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user')
+        }
+
+        studentData.id = userCreate[0].id
+        studentData.user = userCreate[0]._id
+        const newStudent = await Student.create([studentData], { session })
+        if (!newStudent.length) {
+            throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create student')
+        }
+
+       await session.commitTransaction()
+        await session.endSession()
         return newStudent
+
+    } catch (error) {
+        await session.abortTransaction()
+       await session.endSession()
     }
 }
 

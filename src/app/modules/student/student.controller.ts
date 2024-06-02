@@ -45,7 +45,7 @@ const deleteStudent = catchAsync(async (
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Student is retrieved succesfully',
+        message: 'Student is delete succesfully',
         data: result
     })
 });
