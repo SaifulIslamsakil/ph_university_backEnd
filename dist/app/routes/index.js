@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const student_route_1 = require("../modules/student/student.route");
 const user_route_1 = __importDefault(require("../modules/users/user.route"));
 const admissionSemester_route_1 = require("../modules/admissionSemester/admissionSemester.route");
-const academicFaculty_route_1 = require("../modules/admissionSemester/academicFaculty.route");
+const academicFaculty_route_1 = require("../modules/academicFaculty/academicFaculty.route");
 const router = express_1.default.Router();
 const moduleRoute = [
     {
