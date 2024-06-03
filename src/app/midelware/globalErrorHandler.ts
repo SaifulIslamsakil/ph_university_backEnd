@@ -3,6 +3,7 @@ import { TErrorSources } from "../interface/errorInterface";
 import { ZodError } from "zod";
 import handelZodError from "../errors/handelZodError";
 import handelMongooseValidationErrors from "../errors/handelMongooseValidationErrors";
+import handelMongooseCastError from "../errors/handelMogooseCastError";
 
 
 const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
@@ -22,6 +23,12 @@ const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
     }
     else if (err.name === "ValidationError") {
         const simplifiedError = handelMongooseValidationErrors(err)
+        statusCord = simplifiedError.statusCode
+        message = simplifiedError.message
+        errorSources = simplifiedError.errorSources
+    }
+    else if (err.name === "CastError") {
+        const simplifiedError = handelMongooseCastError(err)
         statusCord = simplifiedError.statusCode
         message = simplifiedError.message
         errorSources = simplifiedError.errorSources

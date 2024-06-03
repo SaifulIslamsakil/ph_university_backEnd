@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const zod_1 = require("zod");
 const handelZodError_1 = __importDefault(require("../errors/handelZodError"));
 const handelMongooseValidationErrors_1 = __importDefault(require("../errors/handelMongooseValidationErrors"));
+const handelMogooseCastError_1 = __importDefault(require("../errors/handelMogooseCastError"));
 const globalErrorHandler = (err, req, res, next) => {
     let statusCord = 500;
     let message = err.message || 'Something went wrong!';
@@ -23,6 +24,12 @@ const globalErrorHandler = (err, req, res, next) => {
     }
     else if (err.name === "ValidationError") {
         const simplifiedError = (0, handelMongooseValidationErrors_1.default)(err);
+        statusCord = simplifiedError.statusCode;
+        message = simplifiedError.message;
+        errorSources = simplifiedError.errorSources;
+    }
+    else if (err.name === "CastError") {
+        const simplifiedError = (0, handelMogooseCastError_1.default)(err);
         statusCord = simplifiedError.statusCode;
         message = simplifiedError.message;
         errorSources = simplifiedError.errorSources;
