@@ -29,17 +29,18 @@ const academicDepartmentSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-academicDepartmentSchema.pre('save', function (next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const isDepartmentExist = yield exports.AcademicDepartment.findOne({
-            name: this.name,
-        });
-        if (isDepartmentExist) {
-            throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This department is already exist!');
-        }
-        next();
-    });
-});
+// academicDepartmentSchema.pre('save', async function (next) {
+//   const isDepartmentExist = await AcademicDepartment.findOne({
+//     name: this.name,
+//   });
+//   if (isDepartmentExist) {
+//     throw new AppError(
+//       httpStatus.NOT_FOUND,
+//       'This department is already exist!',
+//     );
+//   }
+//   next();
+// });
 academicDepartmentSchema.pre('findOneAndUpdate', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         const query = this.getQuery();
