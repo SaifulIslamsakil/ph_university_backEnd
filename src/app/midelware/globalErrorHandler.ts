@@ -4,6 +4,7 @@ import { ZodError } from "zod";
 import handelZodError from "../errors/handelZodError";
 import handelMongooseValidationErrors from "../errors/handelMongooseValidationErrors";
 import handelMongooseCastError from "../errors/handelMogooseCastError";
+import handleMongooseDuplicateError from "../errors/handleMongooseDuplicateError";
 
 
 const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
@@ -29,6 +30,12 @@ const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
     }
     else if (err.name === "CastError") {
         const simplifiedError = handelMongooseCastError(err)
+        statusCord = simplifiedError.statusCode
+        message = simplifiedError.message
+        errorSources = simplifiedError.errorSources
+    }
+    else if(err.code === 11000){
+        const simplifiedError = handleMongooseDuplicateError(err)
         statusCord = simplifiedError.statusCode
         message = simplifiedError.message
         errorSources = simplifiedError.errorSources
