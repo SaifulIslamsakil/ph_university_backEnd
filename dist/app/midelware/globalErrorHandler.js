@@ -20,7 +20,9 @@ const globalErrorHandler = (err, req, res, next) => {
             message = simplifiedError.message,
             errorSources = simplifiedError.errorSources;
     }
-    // else if (err)
+    else if (err.name === "ValidationError") {
+        const simplifiedError = ;
+    }
     res.status(statusCord).json({
         success: false,
         message,

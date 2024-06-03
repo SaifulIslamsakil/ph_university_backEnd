@@ -19,7 +19,9 @@ const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
             message = simplifiedError.message,
             errorSources = simplifiedError.errorSources
     }
-    // else if (err)
+    else if (err.name === "ValidationError") {
+        const simplifiedError = 
+    }
 
     res.status(statusCord).json({
         success: false,
