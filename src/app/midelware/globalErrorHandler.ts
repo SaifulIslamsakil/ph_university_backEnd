@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { TErrorSources } from "../interface/errorInterface";
 import { ZodError } from "zod";
 import handelZodError from "../errors/handelZodError";
+import handelMongooseValidationErrors from "../errors/handelMongooseValidationErrors";
 
 
 const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
@@ -15,12 +16,15 @@ const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
     ]
     if (err instanceof ZodError) {
         const simplifiedError = handelZodError(err)
-        statusCord = simplifiedError.statusCode,
-            message = simplifiedError.message,
-            errorSources = simplifiedError.errorSources
+        statusCord = simplifiedError.statusCode
+        message = simplifiedError.message
+        errorSources = simplifiedError.errorSources
     }
     else if (err.name === "ValidationError") {
-        const simplifiedError = 
+        const simplifiedError = handelMongooseValidationErrors(err)
+        statusCord = simplifiedError.statusCode
+        message = simplifiedError.message
+        errorSources = simplifiedError.errorSources
     }
 
     res.status(statusCord).json({
