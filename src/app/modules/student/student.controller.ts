@@ -1,4 +1,4 @@
-import {  Request, Response } from 'express';
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';;
 import { StudentServices } from './student.service';
 import sendResponse from '../../utils/sendResponse';
@@ -50,7 +50,10 @@ const deleteStudent = catchAsync(async (
     })
 });
 
-const updateStudent = catchAsync(async(req, res)=>{
+const updateStudent = catchAsync(async (
+    req: Request,
+    res: Response
+) => {
     const id = req.params.studentId
     const body = req.body
     const reuslt = await StudentServices.updateStudentFromDB(id, body)
