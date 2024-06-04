@@ -8,6 +8,7 @@ const handelZodError_1 = __importDefault(require("../errors/handelZodError"));
 const handelMongooseValidationErrors_1 = __importDefault(require("../errors/handelMongooseValidationErrors"));
 const handelMogooseCastError_1 = __importDefault(require("../errors/handelMogooseCastError"));
 const handleMongooseDuplicateError_1 = __importDefault(require("../errors/handleMongooseDuplicateError"));
+const AppError_1 = __importDefault(require("../errors/AppError"));
 const globalErrorHandler = (err, req, res, next) => {
     let statusCord = 500;
     let message = err.message || 'Something went wrong!';
@@ -40,6 +41,21 @@ const globalErrorHandler = (err, req, res, next) => {
         statusCord = simplifiedError.statusCode;
         message = simplifiedError.message;
         errorSources = simplifiedError.errorSources;
+    }
+    else if (err instanceof AppError_1.default) {
+        statusCord = err.statusCode;
+        message = err.message;
+        errorSources = [{
+                path: "",
+                message: err === null || err === void 0 ? void 0 : err.message
+            }];
+    }
+    else if (err instanceof Error) {
+        message = err.message;
+        errorSources = [{
+                path: "",
+                message: err === null || err === void 0 ? void 0 : err.message
+            }];
     }
     res.status(statusCord).json({
         success: false,

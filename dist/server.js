@@ -15,10 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const app_1 = __importDefault(require("./app"));
 const confiq_1 = __importDefault(require("./app/confiq"));
+let server;
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield mongoose_1.default.connect(confiq_1.default.database_URl);
-        app_1.default.listen(confiq_1.default.port, () => {
+        server = app_1.default.listen(confiq_1.default.port, () => {
             console.log(`Example app listening on port ${confiq_1.default.port}`);
         });
     }
@@ -27,3 +28,15 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 main();
+process.on("unhandledRejection", () => {
+    console.log(`😈 unahandledRejection is detected , shutting down ...`);
+    if (server) {
+        server.close(() => {
+            process.exit(1);
+        });
+    }
+});
+process.on("uncaughtException", () => {
+    console.log(`😈 uncaughtException is detected , shutting down ...`);
+    process.exit(1);
+});
