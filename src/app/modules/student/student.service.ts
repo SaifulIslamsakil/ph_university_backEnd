@@ -5,9 +5,47 @@ import httpStatus from 'http-status';
 import UserModel from '../users/user.model';
 import { TStudent } from './student.interface';
 
-const getAllStudentsFromDB = async () => {
-  const result = await Student.find();
-  return result;
+const getAllStudentsFromDB = async (query: any) => {
+  const searchParamsField = ["email", "name.firstName", "name.lastName", "contactNo"]
+  const copyQuray = { ...query }
+
+  let searchParams = ''
+  if (query?.searchParams) {
+    searchParams = query?.searchParams as string
+  }
+
+  const searchParamsData = Student.find({
+    $or: searchParamsField.map((field) => ({
+      [field]: { $regex: searchParams, $options: "i" }
+    }))
+  })
+
+  // filtering 
+
+  const deletedField = ["searchParams", "sort", "limit"]
+
+  deletedField.forEach(element => delete copyQuray[element]);
+
+  const filteringData = searchParamsData.find(copyQuray)
+
+  //  sorting
+
+  let sort = '-createdAt'
+  if (query?.sort) {
+    sort = query?.sort
+  }
+
+  const sortData = filteringData.sort(sort)
+
+  // limit data 
+  let limit = 1
+  if (query?.limit) {
+    limit = query?.limit
+  }
+  const limitedData = await filteringData.limit(limit)
+
+
+  return limitedData;
 };
 
 const getSingleStudentFromDB = async (id: string) => {
@@ -77,9 +115,9 @@ const updateStudentFromDB = async (id: string, payload: TStudent) => {
   console.log(modifiedUpdatedData)
 
   const result = await Student.findOneAndUpdate(
-    {id},
+    { id },
     modifiedUpdatedData,
-    {new: true, runValidators:true}
+    { new: true, runValidators: true }
   )
   return result
 }

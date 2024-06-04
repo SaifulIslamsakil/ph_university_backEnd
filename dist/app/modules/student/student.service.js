@@ -29,9 +29,35 @@ const student_model_1 = require("./student.model");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
 const user_model_1 = __importDefault(require("../users/user.model"));
-const getAllStudentsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield student_model_1.Student.find();
-    return result;
+const getAllStudentsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const searchParamsField = ["email", "name.firstName", "name.lastName", "contactNo"];
+    const copyQuray = Object.assign({}, query);
+    let searchParams = '';
+    if (query === null || query === void 0 ? void 0 : query.searchParams) {
+        searchParams = query === null || query === void 0 ? void 0 : query.searchParams;
+    }
+    const searchParamsData = student_model_1.Student.find({
+        $or: searchParamsField.map((field) => ({
+            [field]: { $regex: searchParams, $options: "i" }
+        }))
+    });
+    // filtering 
+    const deletedField = ["searchParams", "sort", "limit"];
+    deletedField.forEach(element => delete copyQuray[element]);
+    const filteringData = searchParamsData.find(copyQuray);
+    //  sorting
+    let sort = '-createdAt';
+    if (query === null || query === void 0 ? void 0 : query.sort) {
+        sort = query === null || query === void 0 ? void 0 : query.sort;
+    }
+    const sortData = filteringData.sort(sort);
+    // limit data 
+    let limit = 1;
+    if (query === null || query === void 0 ? void 0 : query.limit) {
+        limit = query === null || query === void 0 ? void 0 : query.limit;
+    }
+    const limitedData = yield filteringData.limit(limit);
+    return limitedData;
 });
 const getSingleStudentFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield student_model_1.Student.aggregate([{ $match: { id } }]);

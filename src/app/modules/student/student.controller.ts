@@ -25,7 +25,8 @@ const getAllStudents = catchAsync(async (
     req: Request,
     res: Response,
 ) => {
-    const result = await StudentServices.getAllStudentsFromDB();
+    const quray = req?.query
+    const result = await StudentServices.getAllStudentsFromDB(quray);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
