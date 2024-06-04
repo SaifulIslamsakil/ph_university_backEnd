@@ -22,7 +22,7 @@ const getAllStudentsFromDB = async (query: any) => {
 
   // filtering 
 
-  const deletedField = ["searchParams", "sort", "limit"]
+  const deletedField = ["searchParams", "sort", "limit", "page", "field"]
 
   deletedField.forEach(element => delete copyQuray[element]);
 
@@ -37,15 +37,28 @@ const getAllStudentsFromDB = async (query: any) => {
 
   const sortData = filteringData.sort(sort)
 
-  // limit data 
+  // limit data and paganition
   let limit = 1
+  let page = 1
+  let skip = 0
   if (query?.limit) {
-    limit = query?.limit
+    limit = Number(query?.limit)
   }
-  const limitedData = await filteringData.limit(limit)
+  if (query?.page) {
+    page = Number(query?.page)
+    skip = (page - 1) * limit
+  }
+  const paginateData = sortData.skip(skip)
+  const limitedData = paginateData.limit(limit)
 
+  // field limit
+  let fields = "-_V"
+  if (query?.field) {
+    fields = query?.field.split(',').join(" ")
+  }
 
-  return limitedData;
+  const fieldsLimit = await limitedData.select(fields)
+  return fieldsLimit;
 };
 
 const getSingleStudentFromDB = async (id: string) => {

@@ -42,7 +42,7 @@ const getAllStudentsFromDB = (query) => __awaiter(void 0, void 0, void 0, functi
         }))
     });
     // filtering 
-    const deletedField = ["searchParams", "sort", "limit"];
+    const deletedField = ["searchParams", "sort", "limit", "page", "field"];
     deletedField.forEach(element => delete copyQuray[element]);
     const filteringData = searchParamsData.find(copyQuray);
     //  sorting
@@ -51,13 +51,26 @@ const getAllStudentsFromDB = (query) => __awaiter(void 0, void 0, void 0, functi
         sort = query === null || query === void 0 ? void 0 : query.sort;
     }
     const sortData = filteringData.sort(sort);
-    // limit data 
+    // limit data and paganition
     let limit = 1;
+    let page = 1;
+    let skip = 0;
     if (query === null || query === void 0 ? void 0 : query.limit) {
-        limit = query === null || query === void 0 ? void 0 : query.limit;
+        limit = Number(query === null || query === void 0 ? void 0 : query.limit);
     }
-    const limitedData = yield filteringData.limit(limit);
-    return limitedData;
+    if (query === null || query === void 0 ? void 0 : query.page) {
+        page = Number(query === null || query === void 0 ? void 0 : query.page);
+        skip = (page - 1) * limit;
+    }
+    const paginateData = sortData.skip(skip);
+    const limitedData = paginateData.limit(limit);
+    // field limit
+    let fields = "-_V";
+    if (query === null || query === void 0 ? void 0 : query.field) {
+        fields = query === null || query === void 0 ? void 0 : query.field.split(',').join(" ");
+    }
+    const fieldsLimit = yield limitedData.select(fields);
+    return fieldsLimit;
 });
 const getSingleStudentFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield student_model_1.Student.aggregate([{ $match: { id } }]);
