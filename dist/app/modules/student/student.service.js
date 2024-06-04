@@ -29,48 +29,52 @@ const student_model_1 = require("./student.model");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
 const user_model_1 = __importDefault(require("../users/user.model"));
+const QureyBulder_1 = __importDefault(require("../../bulders/QureyBulder"));
+const student_constnt_1 = require("./student.constnt");
 const getAllStudentsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const searchParamsField = ["email", "name.firstName", "name.lastName", "contactNo"];
-    const copyQuray = Object.assign({}, query);
-    let searchParams = '';
-    if (query === null || query === void 0 ? void 0 : query.searchParams) {
-        searchParams = query === null || query === void 0 ? void 0 : query.searchParams;
-    }
-    const searchParamsData = student_model_1.Student.find({
-        $or: searchParamsField.map((field) => ({
-            [field]: { $regex: searchParams, $options: "i" }
-        }))
-    });
-    // filtering 
-    const deletedField = ["searchParams", "sort", "limit", "page", "field"];
-    deletedField.forEach(element => delete copyQuray[element]);
-    const filteringData = searchParamsData.find(copyQuray);
-    //  sorting
-    let sort = '-createdAt';
-    if (query === null || query === void 0 ? void 0 : query.sort) {
-        sort = query === null || query === void 0 ? void 0 : query.sort;
-    }
-    const sortData = filteringData.sort(sort);
-    // limit data and paganition
-    let limit = 1;
-    let page = 1;
-    let skip = 0;
-    if (query === null || query === void 0 ? void 0 : query.limit) {
-        limit = Number(query === null || query === void 0 ? void 0 : query.limit);
-    }
-    if (query === null || query === void 0 ? void 0 : query.page) {
-        page = Number(query === null || query === void 0 ? void 0 : query.page);
-        skip = (page - 1) * limit;
-    }
-    const paginateData = sortData.skip(skip);
-    const limitedData = paginateData.limit(limit);
-    // field limit
-    let fields = "-_V";
-    if (query === null || query === void 0 ? void 0 : query.field) {
-        fields = query === null || query === void 0 ? void 0 : query.field.split(',').join(" ");
-    }
-    const fieldsLimit = yield limitedData.select(fields);
-    return fieldsLimit;
+    //  Raw searching 
+    // const copyQuray = { ...query }
+    // let searchParams = ''
+    // if (query?.searchParams) {
+    //   searchParams = query?.searchParams as string
+    // }
+    // const searchParamsData = Student.find({
+    //   $or: searchParamsField.map((field) => ({
+    //     [field]: { $regex: searchParams, $options: "i" }
+    //   }))
+    // })
+    // // filtering 
+    // const deletedField = ["searchParams", "sort", "limit", "page", "field"]
+    // deletedField.forEach(element => delete copyQuray[element]);
+    // const filteringData = searchParamsData.find(copyQuray)
+    // //  sorting
+    // let sort = '-createdAt'
+    // if (query?.sort) {
+    //   sort = query?.sort
+    // }
+    // const sortData = filteringData.sort(sort)
+    // // limit data and paganition
+    // let limit = 1
+    // let page = 1
+    // let skip = 0
+    // if (query?.limit) {
+    //   limit = Number(query?.limit)
+    // }
+    // if (query?.page) {
+    //   page = Number(query?.page)
+    //   skip = (page - 1) * limit
+    // }
+    // const paginateData = sortData.skip(skip)
+    // const limitedData = paginateData.limit(limit)
+    // // field limit
+    // let fields = "-_V"
+    // if (query?.field) {
+    //   fields = query?.field.split(',').join(" ")
+    // }
+    // Class searchnig and reusedable cord 
+    const queryBuilder = new QureyBulder_1.default(student_model_1.Student.find(), query).search(student_constnt_1.searchParamsField).filter().paginate().sort().fields();
+    const result = yield queryBuilder.modelQuery;
+    return result;
 });
 const getSingleStudentFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield student_model_1.Student.aggregate([{ $match: { id } }]);

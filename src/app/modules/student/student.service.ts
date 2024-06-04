@@ -4,61 +4,69 @@ import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import UserModel from '../users/user.model';
 import { TStudent } from './student.interface';
+import QueryBuilder from '../../bulders/QureyBulder';
+import { searchParamsField } from './student.constnt';
 
 const getAllStudentsFromDB = async (query: any) => {
-  const searchParamsField = ["email", "name.firstName", "name.lastName", "contactNo"]
-  const copyQuray = { ...query }
 
-  let searchParams = ''
-  if (query?.searchParams) {
-    searchParams = query?.searchParams as string
-  }
+  //  Raw searching 
+ 
+  // const copyQuray = { ...query }
 
-  const searchParamsData = Student.find({
-    $or: searchParamsField.map((field) => ({
-      [field]: { $regex: searchParams, $options: "i" }
-    }))
-  })
+  // let searchParams = ''
+  // if (query?.searchParams) {
+  //   searchParams = query?.searchParams as string
+  // }
 
-  // filtering 
+  // const searchParamsData = Student.find({
+  //   $or: searchParamsField.map((field) => ({
+  //     [field]: { $regex: searchParams, $options: "i" }
+  //   }))
+  // })
 
-  const deletedField = ["searchParams", "sort", "limit", "page", "field"]
+  // // filtering 
 
-  deletedField.forEach(element => delete copyQuray[element]);
+  // const deletedField = ["searchParams", "sort", "limit", "page", "field"]
 
-  const filteringData = searchParamsData.find(copyQuray)
+  // deletedField.forEach(element => delete copyQuray[element]);
 
-  //  sorting
+  // const filteringData = searchParamsData.find(copyQuray)
 
-  let sort = '-createdAt'
-  if (query?.sort) {
-    sort = query?.sort
-  }
+  // //  sorting
 
-  const sortData = filteringData.sort(sort)
+  // let sort = '-createdAt'
+  // if (query?.sort) {
+  //   sort = query?.sort
+  // }
 
-  // limit data and paganition
-  let limit = 1
-  let page = 1
-  let skip = 0
-  if (query?.limit) {
-    limit = Number(query?.limit)
-  }
-  if (query?.page) {
-    page = Number(query?.page)
-    skip = (page - 1) * limit
-  }
-  const paginateData = sortData.skip(skip)
-  const limitedData = paginateData.limit(limit)
+  // const sortData = filteringData.sort(sort)
 
-  // field limit
-  let fields = "-_V"
-  if (query?.field) {
-    fields = query?.field.split(',').join(" ")
-  }
+  // // limit data and paganition
+  // let limit = 1
+  // let page = 1
+  // let skip = 0
+  // if (query?.limit) {
+  //   limit = Number(query?.limit)
+  // }
+  // if (query?.page) {
+  //   page = Number(query?.page)
+  //   skip = (page - 1) * limit
+  // }
+  // const paginateData = sortData.skip(skip)
+  // const limitedData = paginateData.limit(limit)
 
-  const fieldsLimit = await limitedData.select(fields)
-  return fieldsLimit;
+  // // field limit
+  // let fields = "-_V"
+  // if (query?.field) {
+  //   fields = query?.field.split(',').join(" ")
+  // }
+
+  // Class searchnig and reusedable cord 
+
+  const queryBuilder = new QueryBuilder(Student.find(), query).search(searchParamsField).filter().paginate().sort().fields()
+
+  const result = await queryBuilder.modelQuery
+  return result
 };
 
 const getSingleStudentFromDB = async (id: string) => {
