@@ -1,6 +1,8 @@
 
 import express from "express"
-import { createFacultyValidationSchema } from "./faculty.validation"
+import { createFacultyValidationSchema, updateFacultyValidationSchema } from "./faculty.validation"
+import { FacultyControllers } from "./faculty.controller"
+import validateRequest from "../../midelware/validateRequest"
 
 
 
@@ -8,13 +10,13 @@ const route = express.Router()
 
 // route.post("/create-faculty", validateRequest(createFacultyValidationSchema))
 
-route.get("/")
+route.get("/",FacultyControllers.getAllfaculty)
 
-route.get("/:facultyId")
+route.get("/:facultyId", FacultyControllers.getSingelFaculty)
 
-route.delete("/:facultyId")
+route.delete("/:facultyId", FacultyControllers.deleteFaculty)
 
-route.patch("/:facultyId")
+route.patch("/:facultyId", validateRequest(updateFacultyValidationSchema), FacultyControllers.updateFaculty)
 
 
 export const FacultyRoute = route
