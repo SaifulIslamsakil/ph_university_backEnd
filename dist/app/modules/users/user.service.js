@@ -21,6 +21,7 @@ const user_model_1 = __importDefault(require("./user.model"));
 const user_utils_1 = require("./user.utils");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
+const faculty_model_1 = require("../faculty/faculty.model");
 const creatStudenIntoDB = (password, studentData) => __awaiter(void 0, void 0, void 0, function* () {
     const user = {
         password: "",
@@ -61,6 +62,36 @@ const creatStudenIntoDB = (password, studentData) => __awaiter(void 0, void 0, v
         yield session.endSession();
     }
 });
+const createFacultInToDB = (password, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    const userData = {};
+    userData.password = password || confiq_1.default.default_password;
+    userData.role = "faculty";
+    userData.id = "12345";
+    const session = yield mongoose_1.default.startSession();
+    try {
+        session.startTransaction();
+        const newUser = yield user_model_1.default.create([userData], { session });
+        if (!newUser.length) {
+            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Failed to create user");
+        }
+        payload.id = (_a = newUser[0]) === null || _a === void 0 ? void 0 : _a.id,
+            payload.user = (_b = newUser[0]) === null || _b === void 0 ? void 0 : _b._id;
+        const newFaculty = yield faculty_model_1.FacultyModel.create([payload], { session });
+        if (!newFaculty.length) {
+            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Failed to create Faculty");
+        }
+        yield session.commitTransaction();
+        yield session.endSession();
+        return newFaculty;
+    }
+    catch (err) {
+        yield session.abortTransaction();
+        yield session.endSession();
+        throw new Error(err);
+    }
+});
 exports.userSevice = {
-    creatStudenIntoDB
+    creatStudenIntoDB,
+    createFacultInToDB
 };
