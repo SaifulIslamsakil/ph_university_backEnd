@@ -28,7 +28,7 @@ class QueryBuilder<T> {
         return this
     }
     sort() {
-        const sort = (this?.query?.sort as string).split(",").join(" ") || '-createdAt'
+        const sort = (this?.query?.sort as string)?.split(",")?.join(" ") || '-createdAt'
         this.modelQuery = this.modelQuery.sort(sort as string)
 
         return this
@@ -42,7 +42,7 @@ class QueryBuilder<T> {
         return this
     }
     fields(){
-       const fields = (this?.query?.field as string).split(',').join(" ")
+       const fields = (this?.query?.field as string)?.split(',')?.join(" ")
        this.modelQuery = this.modelQuery.select(fields)
        
        return this

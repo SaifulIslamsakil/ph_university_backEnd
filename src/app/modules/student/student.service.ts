@@ -10,7 +10,7 @@ import { searchParamsField } from './student.constnt';
 const getAllStudentsFromDB = async (query: any) => {
 
   //  Raw searching 
- 
+
   // const copyQuray = { ...query }
 
   // let searchParams = ''
@@ -63,7 +63,13 @@ const getAllStudentsFromDB = async (query: any) => {
 
   // Class searchnig and reusedable cord 
 
-  const queryBuilder = new QueryBuilder(Student.find(), query).search(searchParamsField).filter().paginate().sort().fields()
+  const queryBuilder = new QueryBuilder(Student.find()
+   , query)
+    .search(searchParamsField)
+    .filter()
+    .paginate()
+    .sort()
+    .fields()
 
   const result = await queryBuilder.modelQuery
   return result

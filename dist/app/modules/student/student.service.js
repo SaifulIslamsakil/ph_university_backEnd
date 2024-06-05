@@ -72,7 +72,12 @@ const getAllStudentsFromDB = (query) => __awaiter(void 0, void 0, void 0, functi
     //   fields = query?.field.split(',').join(" ")
     // }
     // Class searchnig and reusedable cord 
-    const queryBuilder = new QureyBulder_1.default(student_model_1.Student.find(), query).search(student_constnt_1.searchParamsField).filter().paginate().sort().fields();
+    const queryBuilder = new QureyBulder_1.default(student_model_1.Student.find(), query)
+        .search(student_constnt_1.searchParamsField)
+        .filter()
+        .paginate()
+        .sort()
+        .fields();
     const result = yield queryBuilder.modelQuery;
     return result;
 });
