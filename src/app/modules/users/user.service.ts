@@ -4,7 +4,7 @@ import { academicSemesterModel } from "../admissionSemester/admissionSemester.mo
 import { TStudent } from "../student/student.interface"
 import { Student } from "../student/student.model"
 import UserModel from "./user.model"
-import { generateStudentId } from "./user.utils"
+import { generateFacultyId, generateStudentId } from "./user.utils"
 import { TnewUser, Tuser } from "./users.interface"
 import AppError from "../../errors/AppError"
 import httpStatus from "http-status"
@@ -65,7 +65,7 @@ const createFacultInToDB = async (password: string, payload: TFaculty) => {
     const userData: Partial<Tuser> = {}
     userData.password = password || confiq.default_password
     userData.role = "faculty"
-    userData.id = "12345"
+    userData.id = await generateFacultyId()
 
     const session = await mongoose.startSession()
     try {

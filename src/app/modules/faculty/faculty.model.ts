@@ -87,8 +87,43 @@ const FacultySchema = new Schema<TFaculty>(
             type: Boolean,
             default: false,
         },
+    },
+    {
+        toJSON :{
+            virtuals : true
+        }
     })
 
-    export const FacultyModel = model<TFaculty>("Faculty", FacultySchema)
+    // generating full name
+
+FacultySchema.virtual("fullNamw",).get(function () {
+    return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`
+})
+
+// filter out deleted documents
+
+FacultySchema.pre("find", function(next){
+    this?.find({isDeleted : {$ne : true}})
+    next()
+} )
+
+FacultySchema.pre("findOne", function(next){
+    this?.findOne({isDeleted : {$ne : true}})
+    next()
+})
+
+FacultySchema.pre("aggregate", function(next){
+    this?.pipeline().unshift({$match:{isDeleted : {$ne : true}}})
+    next()
+})
+
+FacultyNameSchema.statics.isFacultyExists= async function(id:string){
+    const facultyExists = await FacultyModel.find({id})
+    return facultyExists
+}
+
+
+
+export const FacultyModel = model<TFaculty>("Faculty", FacultySchema)
 
 

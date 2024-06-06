@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateStudentId = void 0;
+exports.generateFacultyId = exports.findLastFacultyId = exports.generateStudentId = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
 const findLastStudentId = () => __awaiter(void 0, void 0, void 0, function* () {
     const lastStudent = yield user_model_1.default.findOne({
@@ -45,3 +45,26 @@ const generateStudentId = (payload) => __awaiter(void 0, void 0, void 0, functio
     return incrementId;
 });
 exports.generateStudentId = generateStudentId;
+const findLastFacultyId = () => __awaiter(void 0, void 0, void 0, function* () {
+    const lastFacult = yield user_model_1.default.findOne({
+        role: "faculty"
+    }, {
+        _id: 1,
+        id: 1
+    }).sort({
+        createdAt: -1,
+    }).lean();
+    return (lastFacult === null || lastFacult === void 0 ? void 0 : lastFacult.id) ? lastFacult === null || lastFacult === void 0 ? void 0 : lastFacult.id.substring(2) : undefined;
+});
+exports.findLastFacultyId = findLastFacultyId;
+const generateFacultyId = () => __awaiter(void 0, void 0, void 0, function* () {
+    let currentId = (0).toString();
+    const lastFacultId = yield (0, exports.findLastFacultyId)();
+    if (lastFacultId) {
+        currentId = lastFacultId.substring(2);
+    }
+    let incrementId = (Number(currentId) + 1).toString().padStart(4, "0");
+    incrementId = `F-${incrementId}`;
+    return incrementId;
+});
+exports.generateFacultyId = generateFacultyId;

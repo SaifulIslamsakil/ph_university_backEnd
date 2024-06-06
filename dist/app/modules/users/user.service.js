@@ -67,7 +67,7 @@ const createFacultInToDB = (password, payload) => __awaiter(void 0, void 0, void
     const userData = {};
     userData.password = password || confiq_1.default.default_password;
     userData.role = "faculty";
-    userData.id = "12345";
+    userData.id = yield (0, user_utils_1.generateFacultyId)();
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();
