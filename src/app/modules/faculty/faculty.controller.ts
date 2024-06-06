@@ -7,7 +7,8 @@ import { boolean } from "zod";
 
 
 const getAllfaculty = catchAsync(async(req:Request, res:Response)=>{
-    const result = await FacultyService.getAllFacultyFormDB()
+    const query = req?.query
+    const result = await FacultyService.getAllFacultyFormDB(query)
 
     sendResponse(res, {
         statusCode:httpStatus.OK,

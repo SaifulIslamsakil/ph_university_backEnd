@@ -8,11 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FacultyService = void 0;
+const QureyBulder_1 = __importDefault(require("../../bulders/QureyBulder"));
 const faculty_model_1 = require("./faculty.model");
-const getAllFacultyFormDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield faculty_model_1.FacultyModel.find();
+const getAllFacultyFormDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const FacultySearchableFields = [
+        'email',
+        'id',
+        'contactNo',
+        'emergencyContactNo',
+        'name.firstName',
+        'name.lastName',
+        'name.middleName',
+    ];
+    const faculty = new QureyBulder_1.default(faculty_model_1.FacultyModel.find().populate('academicDepartment'), query).search(FacultySearchableFields).filter().sort().fields().paginate();
+    const result = yield faculty.modelQuery;
     return result;
 });
 const getSingelFormDB = (facultyID) => __awaiter(void 0, void 0, void 0, function* () {
