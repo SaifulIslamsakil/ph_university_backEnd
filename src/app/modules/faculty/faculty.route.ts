@@ -8,15 +8,17 @@ import validateRequest from "../../midelware/validateRequest"
 
 const route = express.Router()
 
-// route.post("/create-faculty", validateRequest(createFacultyValidationSchema))
-
 route.get("/",FacultyControllers.getAllfaculty)
 
 route.get("/:facultyId", FacultyControllers.getSingelFaculty)
 
 route.delete("/:facultyId", FacultyControllers.deleteFaculty)
 
-route.patch("/:facultyId", validateRequest(updateFacultyValidationSchema), FacultyControllers.updateFaculty)
+route.patch("/:facultyId", validateRequest(updateFacultyValidationSchema) , FacultyControllers.updatefaculty)
+
+
+
+
 
 
 export const FacultyRoute = route

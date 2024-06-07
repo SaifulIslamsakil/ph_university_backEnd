@@ -49,15 +49,14 @@ const deleteFaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result
     });
 }));
-const updateFaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c;
-    const facultyId = (_c = req === null || req === void 0 ? void 0 : req.params) === null || _c === void 0 ? void 0 : _c.facultyId;
-    const body = req === null || req === void 0 ? void 0 : req.body;
-    const result = yield faculty_service_1.FacultyService.updateFacultyFormDB(facultyId, body);
+const updatefaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { facultyId } = req === null || req === void 0 ? void 0 : req.params;
+    const body = req.body;
+    const result = yield faculty_service_1.FacultyService.updateFacultyIntoDB(facultyId, body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Faculty data in deleted successfully",
+        message: "Faculty data is updated successfully",
         data: result
     });
 }));
@@ -65,5 +64,5 @@ exports.FacultyControllers = {
     getAllfaculty,
     getSingelFaculty,
     deleteFaculty,
-    updateFaculty
+    updatefaculty
 };

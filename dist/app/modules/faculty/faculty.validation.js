@@ -42,7 +42,7 @@ exports.updateFacultyValidationSchema = zod_1.z.object({
     body: zod_1.z.object({
         faculty: zod_1.z.object({
             designation: zod_1.z.string().optional(),
-            name: updateUserNameValidationSchema,
+            name: updateUserNameValidationSchema.optional(),
             gender: zod_1.z.enum([...faculty_model_1.Gender]).optional(),
             dateOfBirth: zod_1.z.string().optional(),
             email: zod_1.z.string().email().optional(),
