@@ -12,6 +12,7 @@ import { TFaculty } from "../faculty/faculty.interface"
 import { FacultyModel } from "../faculty/faculty.model"
 
 
+
 const creatStudenIntoDB = async (password: string, studentData: TStudent) => {
     const user: TnewUser = {
         password: "",
@@ -97,7 +98,10 @@ const createFacultInToDB = async (password: string, payload: TFaculty) => {
     }
 }
 
+
+
 export const userSevice = {
     creatStudenIntoDB,
-    createFacultInToDB
+    createFacultInToDB,
+    
 }

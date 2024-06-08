@@ -93,5 +93,5 @@ const createFacultInToDB = (password, payload) => __awaiter(void 0, void 0, void
 });
 exports.userSevice = {
     creatStudenIntoDB,
-    createFacultInToDB
+    createFacultInToDB,
 };

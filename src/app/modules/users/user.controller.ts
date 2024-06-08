@@ -29,7 +29,9 @@ const facultyCreate = catchAsync(async (req: Request, res: Response) => {
         data:result
     })
 })
+
 export const userController = {
     studentCreate,
-    facultyCreate
+    facultyCreate,
+
 }

@@ -17,7 +17,7 @@ const QureyBulder_1 = __importDefault(require("../../bulders/QureyBulder"));
 const admin_constan_1 = require("./admin.constan");
 const admin_model_1 = require("./admin.model");
 const getAllAdminFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const adminData = new QureyBulder_1.default(admin_model_1.Admin.find(), query)
+    const adminData = new QureyBulder_1.default(admin_model_1.AdminModel.find(), query)
         .search(admin_constan_1.AdminSearchableFields)
         .sort()
         .filter()
@@ -27,11 +27,11 @@ const getAllAdminFromDB = (query) => __awaiter(void 0, void 0, void 0, function*
     return result;
 });
 const getSingelAdminFromDB = (adminId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield admin_model_1.Admin.findById(adminId);
+    const result = yield admin_model_1.AdminModel.findById(adminId);
     return result;
 });
 const deletedAdminFormDB = (adminId) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield admin_model_1.Admin.findByIdAndUpdate(adminId, {
+    const result = yield admin_model_1.AdminModel.findByIdAndUpdate(adminId, {
         isDeleted: true,
         new: true
     });

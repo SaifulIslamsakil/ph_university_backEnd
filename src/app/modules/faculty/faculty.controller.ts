@@ -40,24 +40,22 @@ const deleteFaculty = catchAsync(async (req: Request, res: Response) => {
     })
 })
 
-
-const updatefaculty = catchAsync(async (req: Request, res: Response) => {
-    const { facultyId } = req?.params
-    const body = req.body
-    const result = await FacultyService.updateFacultyIntoDB(facultyId, body)
-
+const updateFaculty = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const { faculty } = req.body;
+    const result = await FacultyService.updateFacultyIntoDB( id , faculty);
+  
     sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Faculty data is updated successfully",
-        data: result
-
-    })
-})
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Faculty is updated succesfully',
+      data: result,
+    });
+  });
 
 export const FacultyControllers = {
     getAllfaculty,
     getSingelFaculty,
     deleteFaculty,
-    updatefaculty
+    updateFaculty
 }

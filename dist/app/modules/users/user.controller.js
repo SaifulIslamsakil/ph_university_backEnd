@@ -40,5 +40,5 @@ const facultyCreate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 }));
 exports.userController = {
     studentCreate,
-    facultyCreate
+    facultyCreate,
 };

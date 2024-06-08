@@ -49,20 +49,20 @@ const deleteFaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result
     });
 }));
-const updatefaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { facultyId } = req === null || req === void 0 ? void 0 : req.params;
-    const body = req.body;
-    const result = yield faculty_service_1.FacultyService.updateFacultyIntoDB(facultyId, body);
+const updateFaculty = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { faculty } = req.body;
+    const result = yield faculty_service_1.FacultyService.updateFacultyIntoDB(id, faculty);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Faculty data is updated successfully",
-        data: result
+        message: 'Faculty is updated succesfully',
+        data: result,
     });
 }));
 exports.FacultyControllers = {
     getAllfaculty,
     getSingelFaculty,
     deleteFaculty,
-    updatefaculty
+    updateFaculty
 };
