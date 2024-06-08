@@ -4,12 +4,14 @@ import { academicSemesterModel } from "../admissionSemester/admissionSemester.mo
 import { TStudent } from "../student/student.interface"
 import { Student } from "../student/student.model"
 import UserModel from "./user.model"
-import { generateFacultyId, generateStudentId } from "./user.utils"
+import { genaretAdminId, generateFacultyId, generateStudentId } from "./user.utils"
 import { TnewUser, Tuser } from "./users.interface"
 import AppError from "../../errors/AppError"
 import httpStatus from "http-status"
 import { TFaculty } from "../faculty/faculty.interface"
 import { FacultyModel } from "../faculty/faculty.model"
+import { TAdmin } from "../admin/admin.interface"
+import { Admin } from "../admin/admin.model"
 
 
 
@@ -98,10 +100,45 @@ const createFacultInToDB = async (password: string, payload: TFaculty) => {
     }
 }
 
+const createAdminIntoDB = async (password: string, payload: TAdmin) => {
+    console.log({ password }, { payload })
+    const userData: Partial<Tuser> = {}
+    userData.password = password || confiq.default_password
+    userData.role = "admin"
+    userData.id = await genaretAdminId()
 
+    const session = await mongoose.startSession()
+    try {
+        session.startTransaction()
+        const newUser = await UserModel.create([userData], { session })
+
+        if (!newUser.length) {
+            throw new AppError(httpStatus.BAD_REQUEST, "Failed to create user")
+        }
+
+        payload.id = newUser[0]?.id,
+            payload.user = newUser[0]?._id
+
+        const newAdmin = await Admin.create([payload], { session })
+
+        if (!newAdmin.length) {
+            throw new AppError(httpStatus.BAD_REQUEST, "Failed to create Admin")
+        }
+
+        await session.commitTransaction()
+        await session.endSession()
+
+        return newUser
+
+    } catch (err: any) {
+        await session.abortTransaction()
+        await session.endSession()
+        throw new Error(err)
+    }
+}
 
 export const userSevice = {
     creatStudenIntoDB,
     createFacultInToDB,
-    
+    createAdminIntoDB
 }

@@ -22,6 +22,7 @@ const user_utils_1 = require("./user.utils");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
 const faculty_model_1 = require("../faculty/faculty.model");
+const admin_model_1 = require("../admin/admin.model");
 const creatStudenIntoDB = (password, studentData) => __awaiter(void 0, void 0, void 0, function* () {
     const user = {
         password: "",
@@ -91,7 +92,38 @@ const createFacultInToDB = (password, payload) => __awaiter(void 0, void 0, void
         throw new Error(err);
     }
 });
+const createAdminIntoDB = (password, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c, _d;
+    console.log({ password }, { payload });
+    const userData = {};
+    userData.password = password || confiq_1.default.default_password;
+    userData.role = "admin";
+    userData.id = yield (0, user_utils_1.genaretAdminId)();
+    const session = yield mongoose_1.default.startSession();
+    try {
+        session.startTransaction();
+        const newUser = yield user_model_1.default.create([userData], { session });
+        if (!newUser.length) {
+            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Failed to create user");
+        }
+        payload.id = (_c = newUser[0]) === null || _c === void 0 ? void 0 : _c.id,
+            payload.user = (_d = newUser[0]) === null || _d === void 0 ? void 0 : _d._id;
+        const newAdmin = yield admin_model_1.Admin.create([payload], { session });
+        if (!newAdmin.length) {
+            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, "Failed to create Admin");
+        }
+        yield session.commitTransaction();
+        yield session.endSession();
+        return newUser;
+    }
+    catch (err) {
+        yield session.abortTransaction();
+        yield session.endSession();
+        throw new Error(err);
+    }
+});
 exports.userSevice = {
     creatStudenIntoDB,
     createFacultInToDB,
+    createAdminIntoDB
 };

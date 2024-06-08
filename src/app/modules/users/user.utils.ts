@@ -1,3 +1,4 @@
+import { Admin } from "../admin/admin.model";
 import { TAcademicSemester } from "../admissionSemester/admissionSemester.interface";
 import UserModel from "./user.model";
 
@@ -70,6 +71,34 @@ export const generateFacultyId = async () => {
     let incrementId = (Number(currentId) + 1).toString().padStart(4, "0")
     incrementId = `F-${incrementId}`
 
+
+    return incrementId
+}
+
+const findLastAdminId = async () => {
+    const lastAdmin = await Admin.findOne(
+        {
+            role: "admin"
+        },
+        {
+            _id: 1,
+            id: 1
+        }
+    ).sort({
+        createdAt: -1,
+    }).lean()
+
+    return lastAdmin?.id ? lastAdmin?.id.substring(2) : undefined
+}
+
+export const genaretAdminId = async()=>{
+    let currentId = (0).toString()
+    const lastAdminId = await findLastAdminId()
+    if(lastAdminId){
+        currentId = lastAdminId.substring(2)
+    }
+    let incrementId = (Number(currentId)+1).toString().padStart(4, "0")
+    incrementId = `A-${incrementId}`
 
     return incrementId
 }

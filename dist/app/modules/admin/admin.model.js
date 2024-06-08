@@ -9,26 +9,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminModel = exports.BloodGroup = exports.Gender = void 0;
+exports.Admin = void 0;
 const mongoose_1 = require("mongoose");
-const FacultyNameSchema = new mongoose_1.Schema({
+const admin_constant_1 = require("./admin.constant");
+const userNameSchema = new mongoose_1.Schema({
     firstName: {
         type: String,
-        required: [true, "First Name is required"],
-        maxlength: [20, "Name can not be more than 20 characters"]
+        required: [true, 'First Name is required'],
+        trim: true,
+        maxlength: [20, 'Name can not be more than 20 characters'],
     },
     middleName: {
         type: String,
-        required: true
+        trim: true,
     },
     lastName: {
         type: String,
-        required: true
-    }
+        trim: true,
+        required: [true, 'Last Name is required'],
+        maxlength: [20, 'Name can not be more than 20 characters'],
+    },
 });
-exports.Gender = ['male', 'female', 'other'];
-exports.BloodGroup = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-const FacultySchema = new mongoose_1.Schema({
+const adminSchema = new mongoose_1.Schema({
     id: {
         type: String,
         required: [true, 'ID is required'],
@@ -45,13 +47,13 @@ const FacultySchema = new mongoose_1.Schema({
         required: [true, 'Designation is required'],
     },
     name: {
-        type: FacultyNameSchema,
+        type: userNameSchema,
         required: [true, 'Name is required'],
     },
     gender: {
         type: String,
         enum: {
-            values: exports.Gender,
+            values: admin_constant_1.Gender,
             message: '{VALUE} is not a valid gender',
         },
         required: [true, 'Gender is required'],
@@ -70,7 +72,7 @@ const FacultySchema = new mongoose_1.Schema({
     bloogGroup: {
         type: String,
         enum: {
-            values: exports.BloodGroup,
+            values: admin_constant_1.BloodGroup,
             message: '{VALUE} is not a valid blood group',
         },
     },
@@ -89,31 +91,36 @@ const FacultySchema = new mongoose_1.Schema({
     },
 }, {
     toJSON: {
-        virtuals: true
-    }
+        virtuals: true,
+    },
 });
 // generating full name
-FacultySchema.virtual("fullNamw").get(function () {
+adminSchema.virtual('fullName').get(function () {
     var _a, _b, _c;
-    return `${(_a = this === null || this === void 0 ? void 0 : this.name) === null || _a === void 0 ? void 0 : _a.firstName} ${(_b = this === null || this === void 0 ? void 0 : this.name) === null || _b === void 0 ? void 0 : _b.middleName} ${(_c = this === null || this === void 0 ? void 0 : this.name) === null || _c === void 0 ? void 0 : _c.lastName}`;
+    return (((_a = this === null || this === void 0 ? void 0 : this.name) === null || _a === void 0 ? void 0 : _a.firstName) +
+        '' +
+        ((_b = this === null || this === void 0 ? void 0 : this.name) === null || _b === void 0 ? void 0 : _b.middleName) +
+        '' +
+        ((_c = this === null || this === void 0 ? void 0 : this.name) === null || _c === void 0 ? void 0 : _c.lastName));
 });
 // filter out deleted documents
-FacultySchema.pre("find", function (next) {
-    this === null || this === void 0 ? void 0 : this.find({ isDeleted: { $ne: true } });
+adminSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } });
     next();
 });
-FacultySchema.pre("findOne", function (next) {
-    this === null || this === void 0 ? void 0 : this.findOne({ isDeleted: { $ne: true } });
+adminSchema.pre('findOne', function (next) {
+    this.find({ isDeleted: { $ne: true } });
     next();
 });
-FacultySchema.pre("aggregate", function (next) {
-    this === null || this === void 0 ? void 0 : this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+adminSchema.pre('aggregate', function (next) {
+    this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
     next();
 });
-FacultyNameSchema.statics.isFacultyExists = function (id) {
+// checking if user is already exist!
+adminSchema.statics.isUserExists = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const facultyExists = yield exports.AdminModel.find({ id });
-        return facultyExists;
+        const existingUser = yield exports.Admin.findOne({ id });
+        return existingUser;
     });
 };
-exports.AdminModel = (0, mongoose_1.model)("Admin", FacultySchema);
+exports.Admin = (0, mongoose_1.model)('Admin', adminSchema);
